@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-import { Card, CardGrid, Container, Header } from "./Elements";
+import Header from "./Header";
+import { Card, CardGrid, Container } from "./Elements";
 import "./App.css";
-import Menu from "./Menu";
 import blue from "./blue.png";
 import purp from "./purp.png";
 import black from "./black.png";
@@ -17,13 +17,16 @@ function App() {
   }, []);
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: Number(toggle) }}>
-      <Header>
-        <Menu />
-        <h1>Header</h1>
-      </Header>
+    <div>
+      <Header></Header>
       <Container>
-        <motion.h2 animate={{ x: Number(value) }}>Super Cool</motion.h2>
+        <AnimatePresence>
+          {toggle && (
+            <motion.h2 initial={{ opacity: 0 }} animate={{ x: Number(value), opacity: 1 }} exit={{ opacity: 0 }}>
+              Super Cool
+            </motion.h2>
+          )}
+        </AnimatePresence>
         <input type="range" min="-100" max="100" value={value} onChange={handleVolumeChange} />
         <button onClick={() => setToggle((prevValue) => !prevValue)}>Toggle</button>
         <CardGrid>
@@ -45,7 +48,7 @@ function App() {
           </Card>
         </CardGrid>
       </Container>
-    </motion.div>
+    </div>
   );
 }
 
